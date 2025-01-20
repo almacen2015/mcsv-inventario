@@ -18,12 +18,11 @@ public class MovimientoServiceImpl implements MovimientoService {
 
     private final MovimientoRepository movimientoRepository;
     private final MovimientoMapper movimientoMapper = MovimientoMapper.INSTANCE;
+    private final ProductoClient productoClient;
 
-    @Autowired
-    private ProductoClient productoClient;
-
-    public MovimientoServiceImpl(MovimientoRepository movimientoRepository) {
+    public MovimientoServiceImpl(MovimientoRepository movimientoRepository, ProductoClient productoClient) {
         this.movimientoRepository = movimientoRepository;
+        this.productoClient = productoClient;
     }
 
     @Override
