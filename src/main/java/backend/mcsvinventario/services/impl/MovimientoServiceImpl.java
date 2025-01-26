@@ -5,12 +5,14 @@ import backend.mcsvinventario.exceptions.MovimientoException;
 import backend.mcsvinventario.mappers.MovimientoMapper;
 import backend.mcsvinventario.models.dtos.MovimientoDtoRequest;
 import backend.mcsvinventario.models.dtos.ProductoDtoResponse;
+import backend.mcsvinventario.models.entities.Movimiento;
 import backend.mcsvinventario.repositories.MovimientoRepository;
 import backend.mcsvinventario.services.MovimientoService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -34,6 +36,9 @@ public class MovimientoServiceImpl implements MovimientoService {
         sonDatosValidos(cantidad, tipoMovimiento, productoId);
         verificarExistenciaProducto(productoId);
 
+        Movimiento movimiento = movimientoMapper.toEntity(dto);
+        movimiento.setFechaRegistro(LocalDateTime.now());
+        movimientoRepository.save(movimiento);
     }
 
     private void verificarExistenciaProducto(Integer productoId) {
