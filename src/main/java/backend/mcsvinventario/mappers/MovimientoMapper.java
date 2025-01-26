@@ -1,6 +1,7 @@
 package backend.mcsvinventario.mappers;
 
 import backend.mcsvinventario.models.dtos.MovimientoDtoRequest;
+import backend.mcsvinventario.models.dtos.MovimientoDtoResponse;
 import backend.mcsvinventario.models.entities.Movimiento;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -12,4 +13,6 @@ public interface MovimientoMapper {
 
     @Mapping(target = "id", ignore = true)
     Movimiento toEntity(MovimientoDtoRequest dto);
+
+    MovimientoDtoResponse toDto(Movimiento entity);
 }

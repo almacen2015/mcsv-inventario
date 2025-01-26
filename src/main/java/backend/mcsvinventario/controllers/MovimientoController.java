@@ -1,6 +1,7 @@
 package backend.mcsvinventario.controllers;
 
 import backend.mcsvinventario.models.dtos.MovimientoDtoRequest;
+import backend.mcsvinventario.models.dtos.MovimientoDtoResponse;
 import backend.mcsvinventario.services.MovimientoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -28,8 +29,8 @@ public class MovimientoController {
             @ApiResponse(responseCode = "200", description = "Movimiento registrado"),
             @ApiResponse(responseCode = "400", description = "Datos inválidos")
     })
-    public ResponseEntity<?> registrarMovimiento(@RequestBody MovimientoDtoRequest dto) {
-        movimientoService.registrarMovimiento(dto);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<MovimientoDtoResponse> registrarMovimiento(@RequestBody MovimientoDtoRequest dto) {
+        MovimientoDtoResponse response = movimientoService.registrarMovimiento(dto);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

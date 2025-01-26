@@ -4,6 +4,7 @@ import backend.mcsvinventario.client.ProductoClient;
 import backend.mcsvinventario.exceptions.MovimientoException;
 import backend.mcsvinventario.mappers.MovimientoMapper;
 import backend.mcsvinventario.models.dtos.MovimientoDtoRequest;
+import backend.mcsvinventario.models.dtos.MovimientoDtoResponse;
 import backend.mcsvinventario.models.dtos.ProductoDtoResponse;
 import backend.mcsvinventario.models.entities.Movimiento;
 import backend.mcsvinventario.repositories.MovimientoRepository;
@@ -29,7 +30,7 @@ public class MovimientoServiceImpl implements MovimientoService {
 
     @Override
     @Transactional(rollbackOn = Exception.class)
-    public void registrarMovimiento(MovimientoDtoRequest dto) {
+    public MovimientoDtoResponse registrarMovimiento(MovimientoDtoRequest dto) {
         final Integer cantidad = dto.cantidad();
         final String tipoMovimiento = dto.tipoMovimiento();
         final Integer productoId = dto.productoId();
@@ -38,7 +39,7 @@ public class MovimientoServiceImpl implements MovimientoService {
 
         Movimiento movimiento = movimientoMapper.toEntity(dto);
         movimiento.setFechaRegistro(LocalDateTime.now());
-        movimientoRepository.save(movimiento);
+        return movimientoMapper.toDto(movimientoRepository.save(movimiento));
     }
 
     private void verificarExistenciaProducto(Integer productoId) {
