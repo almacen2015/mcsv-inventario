@@ -7,6 +7,7 @@ import backend.mcsvinventario.models.dtos.MovimientoDtoRequest;
 import backend.mcsvinventario.models.dtos.MovimientoDtoResponse;
 import backend.mcsvinventario.models.dtos.ProductoDtoResponse;
 import backend.mcsvinventario.models.entities.Movimiento;
+import backend.mcsvinventario.models.entities.TipoMovimiento;
 import backend.mcsvinventario.repositories.MovimientoRepository;
 import backend.mcsvinventario.services.MovimientoService;
 import jakarta.transaction.Transactional;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -35,18 +37,26 @@ public class MovimientoServiceImpl implements MovimientoService {
         final String tipoMovimiento = dto.tipoMovimiento();
         final Integer productoId = dto.productoId();
         sonDatosValidos(cantidad, tipoMovimiento, productoId);
-        verificarExistenciaProducto(productoId);
+        ProductoDtoResponse producto = obtenerProducto(productoId);
+        verificarStock(producto.stock(), tipoMovimiento);
 
         Movimiento movimiento = movimientoMapper.toEntity(dto);
         movimiento.setFechaRegistro(LocalDateTime.now());
         return movimientoMapper.toDto(movimientoRepository.save(movimiento));
     }
 
-    private void verificarExistenciaProducto(Integer productoId) {
+    private void verificarStock(Integer stock, String tipoMovimiento) {
+        if (Objects.equals(tipoMovimiento, TipoMovimiento.SALIDA.name()) && stock <= 0) {
+            throw new MovimientoException(MovimientoException.MOVIMIENTO_SIN_STOCK);
+        }
+    }
+
+    private ProductoDtoResponse obtenerProducto(Integer productoId) {
         Optional<ProductoDtoResponse> producto = Optional.ofNullable(productoClient.obtenerProducto(productoId));
         if (producto.isEmpty()) {
             throw new MovimientoException(MovimientoException.MOVIMIENTO_PRODUCTO_INVALIDO);
         }
+        return producto.get();
     }
 
     private void sonDatosValidos(Integer cantidad, String tipoMovimiento, Integer idProducto) {
