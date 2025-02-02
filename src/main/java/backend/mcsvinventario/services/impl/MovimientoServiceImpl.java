@@ -11,7 +11,7 @@ import backend.mcsvinventario.models.entities.TipoMovimiento;
 import backend.mcsvinventario.repositories.MovimientoRepository;
 import backend.mcsvinventario.services.MovimientoService;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.http.client.ClientHttpRequestFactoryBuilder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -36,9 +36,12 @@ public class MovimientoServiceImpl implements MovimientoService {
         final Integer cantidad = dto.cantidad();
         final String tipoMovimiento = dto.tipoMovimiento();
         final Integer productoId = dto.productoId();
+
         sonDatosValidos(cantidad, tipoMovimiento, productoId);
         ProductoDtoResponse producto = obtenerProducto(productoId);
         verificarStock(producto.stock(), tipoMovimiento);
+
+        productoClient.actualizarStock(productoId, cantidad, tipoMovimiento);
 
         Movimiento movimiento = movimientoMapper.toEntity(dto);
         movimiento.setFechaRegistro(LocalDateTime.now());
