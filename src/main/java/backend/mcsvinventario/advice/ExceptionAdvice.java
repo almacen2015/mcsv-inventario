@@ -16,7 +16,8 @@ public class ExceptionAdvice {
     public ResponseEntity<?> exceptionHandlerMovimiento(MovimientoException e) {
         if (e.getMessage().equals(MovimientoException.MOVIMIENTO_CANTIDAD_INVALIDA) ||
                 e.getMessage().equals(MovimientoException.MOVIMIENTO_TIPO_INVALIDO) ||
-                e.getMessage().equals(MovimientoException.MOVIMIENTO_PRODUCTO_INVALIDO)) {
+                e.getMessage().equals(MovimientoException.MOVIMIENTO_PRODUCTO_INVALIDO) ||
+                e.getMessage().equals(MovimientoException.MOVIMIENTO_ID_INVALIDO)) {
             log.error(e.getMessage(), e);
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         } else {

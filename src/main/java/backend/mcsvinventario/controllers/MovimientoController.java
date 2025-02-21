@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/movimiento")
 public class MovimientoController {
@@ -33,6 +35,18 @@ public class MovimientoController {
     })
     public ResponseEntity<MovimientoDtoResponse> registrarMovimiento(@RequestBody MovimientoDtoRequest dto) {
         MovimientoDtoResponse response = movimientoService.registrarMovimiento(dto);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/{idProducto}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+    @Operation(summary = "Listar movimientos por producto", description = "Lista los movimientos de un producto")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Movimientos listados"),
+            @ApiResponse(responseCode = "400", description = "Datos inválidos")
+    })
+    public ResponseEntity<List<MovimientoDtoResponse>> listarMovimientosPorProducto(@PathVariable Integer idProducto) {
+        List<MovimientoDtoResponse> response = movimientoService.listarMovimientosPorProducto(idProducto);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

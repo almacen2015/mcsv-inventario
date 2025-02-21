@@ -5,6 +5,7 @@ public class MovimientoException extends RuntimeException {
     public static final String MOVIMIENTO_TIPO_INVALIDO = "El tipo de movimiento es inválido";
     public static final String MOVIMIENTO_SIN_STOCK = "No hay stock suficiente";
     public static final String MOVIMIENTO_PRODUCTO_INVALIDO = "El producto no existe";
+    public static final String MOVIMIENTO_ID_INVALIDO = "El id es inválido";
 
     public MovimientoException(String message) {
         super(message);

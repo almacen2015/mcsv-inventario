@@ -15,6 +15,7 @@ import org.springframework.boot.http.client.ClientHttpRequestFactoryBuilder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -28,6 +29,16 @@ public class MovimientoServiceImpl implements MovimientoService {
     public MovimientoServiceImpl(MovimientoRepository movimientoRepository, ProductoClient productoClient) {
         this.movimientoRepository = movimientoRepository;
         this.productoClient = productoClient;
+    }
+
+    @Override
+    public List<MovimientoDtoResponse> listarMovimientosPorProducto(Integer idProducto) {
+        verificarId(idProducto);
+        List<Movimiento> movimientos = movimientoRepository.findByProductoId(idProducto);
+        if (!movimientos.isEmpty()) {
+            return movimientoMapper.toListDto(movimientos);
+        }
+        return null;
     }
 
     @Override
@@ -62,6 +73,12 @@ public class MovimientoServiceImpl implements MovimientoService {
         return producto.get();
     }
 
+    private void verificarId(Integer id) {
+        if (id == null || id <= 0) {
+            throw new MovimientoException(MovimientoException.MOVIMIENTO_ID_INVALIDO);
+        }
+    }
+
     private void sonDatosValidos(Integer cantidad, String tipoMovimiento, Integer idProducto) {
         if (cantidad == null || cantidad <= 0) {
             throw new MovimientoException(MovimientoException.MOVIMIENTO_CANTIDAD_INVALIDA);
@@ -71,8 +88,6 @@ public class MovimientoServiceImpl implements MovimientoService {
             throw new MovimientoException(MovimientoException.MOVIMIENTO_TIPO_INVALIDO);
         }
 
-        if (idProducto == null || idProducto <= 0) {
-            throw new MovimientoException(MovimientoException.MOVIMIENTO_PRODUCTO_INVALIDO);
-        }
+        verificarId(idProducto);
     }
 }
