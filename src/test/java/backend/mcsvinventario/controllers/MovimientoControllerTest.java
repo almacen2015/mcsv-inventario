@@ -46,6 +46,17 @@ class MovimientoControllerTest {
     }
 
     @Test
+    void testListarMovimientosPorProducto_dadoQueNoHayMovimientos() throws Exception {
+        // Arrange
+        when(service.listarMovimientosPorProducto(2)).thenReturn(List.of());
+        // Act
+        mockMvc.perform(get("/api/movimiento/2")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isEmpty());
+    }
+
+    @Test
     void testListarMovimientosPorProducto() throws Exception {
         // Arrange
         MovimientoDtoResponse response = new MovimientoDtoResponse(10, 1, 5, "ENTRADA", "2025-01-01");
