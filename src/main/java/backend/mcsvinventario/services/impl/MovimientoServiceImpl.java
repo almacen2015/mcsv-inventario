@@ -38,7 +38,7 @@ public class MovimientoServiceImpl implements MovimientoService {
         if (!movimientos.isEmpty()) {
             return movimientoMapper.toListDto(movimientos);
         }
-        return null;
+        return List.of();
     }
 
     @Override

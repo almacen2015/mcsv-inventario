@@ -16,6 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.any;
@@ -32,6 +33,49 @@ class MovimientoServiceImplTest {
 
     @Mock
     private ProductoClient productoClient;
+
+    @Test
+    void testListarMovimientosPorProducto_DadoIdEsMenorIgualZero_RetornaError() {
+        // Arrange
+        Integer idProducto = 0;
+
+        // Act
+        assertThrows(MovimientoException.class, () -> service.listarMovimientosPorProducto(idProducto));
+    }
+
+    @Test
+    void testListarMovimientosPorProducto_DadoProductoNoTieneMovimientos_RetornaListaVacia() {
+        // Arrange
+        when(movimientoRepository.findByProductoId(1)).thenReturn(List.of());
+
+        // Act
+        List<MovimientoDtoResponse> movimientos = service.listarMovimientosPorProducto(1);
+
+        // Assert
+        assertTrue(movimientos.isEmpty());
+    }
+
+    @Test
+    void testListarMovimientosPorProducto_DadoProductoTieneMovimientos_RetornaMovimientos() {
+        // Arrange
+        Movimiento movimiento = Movimiento.builder()
+                .id(1)
+                .productoId(1)
+                .cantidad(10)
+                .tipoMovimiento(TipoMovimiento.ENTRADA)
+                .fechaRegistro(LocalDateTime.of(2021, 10, 10, 10, 10, 10))
+                .build();
+
+        when(movimientoRepository.findByProductoId(1)).thenReturn(java.util.List.of(movimiento));
+
+        // Act
+        List<MovimientoDtoResponse> movimientos = service.listarMovimientosPorProducto(1);
+
+        // Assert
+        assertNotNull(movimientos);
+        assertEquals(1, movimientos.size());
+        assertEquals(1, movimientos.get(0).id());
+    }
 
     @Test
     void testRegistrarMovimiento_tipoMovimientoSalidaSinStock_retornaMovimientoException() {
