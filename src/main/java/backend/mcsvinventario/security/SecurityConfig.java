@@ -27,9 +27,15 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .csrf(csrf -> csrf.disable())
-                .httpBasic(withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(http -> http.anyRequest().authenticated())
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(
+                                "/swagger-ui.html",
+                                "/swagger-ui/**",
+                                "/v3/api-docs/**"
+                        ).permitAll()  // Permitir Swagger sin autenticación
+                        .anyRequest().authenticated()
+                )
                 .addFilterBefore(new JwtFilter(jwtUtils), UsernamePasswordAuthenticationFilter.class);
 
         return httpSecurity.build();
