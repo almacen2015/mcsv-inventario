@@ -40,7 +40,7 @@ class MovimientoServiceImplTest {
         Integer idProducto = 0;
 
         // Act
-        assertThrows(MovimientoException.class, () -> service.listarMovimientosPorProducto(idProducto));
+        assertThrows(MovimientoException.class, () -> service.listByIdProducto(idProducto));
     }
 
     @Test
@@ -49,7 +49,7 @@ class MovimientoServiceImplTest {
         when(movimientoRepository.findByProductoId(1)).thenReturn(List.of());
 
         // Act
-        List<MovimientoDtoResponse> movimientos = service.listarMovimientosPorProducto(1);
+        List<MovimientoDtoResponse> movimientos = service.listByIdProducto(1);
 
         // Assert
         assertTrue(movimientos.isEmpty());
@@ -69,7 +69,7 @@ class MovimientoServiceImplTest {
         when(movimientoRepository.findByProductoId(1)).thenReturn(java.util.List.of(movimiento));
 
         // Act
-        List<MovimientoDtoResponse> movimientos = service.listarMovimientosPorProducto(1);
+        List<MovimientoDtoResponse> movimientos = service.listByIdProducto(1);
 
         // Assert
         assertNotNull(movimientos);
@@ -83,9 +83,9 @@ class MovimientoServiceImplTest {
         MovimientoDtoRequest dto = new MovimientoDtoRequest(1, 10, "SALIDA");
 
         // Act
-        when(productoClient.obtenerProducto(1)).thenReturn(new ProductoDtoResponse(1, "Producto 1", "Descripcion 1", 100.0, true, LocalDate.of(2021, 10, 10), 0));
+        when(productoClient.getProduct(1)).thenReturn(new ProductoDtoResponse(1, "Producto 1", "Descripcion 1", 100.0, true, LocalDate.of(2021, 10, 10), 0));
 
-        assertThrows(MovimientoException.class, () -> service.registrarMovimiento(dto));
+        assertThrows(MovimientoException.class, () -> service.add(dto));
         // Assert
     }
 
@@ -95,9 +95,9 @@ class MovimientoServiceImplTest {
         MovimientoDtoRequest dto = new MovimientoDtoRequest(1, 10, "ENTRADA");
 
         // Act
-        when(productoClient.obtenerProducto(1)).thenReturn(null);
+        when(productoClient.getProduct(1)).thenReturn(null);
 
-        assertThrows(MovimientoException.class, () -> service.registrarMovimiento(dto));
+        assertThrows(MovimientoException.class, () -> service.add(dto));
         // Assert
     }
 
@@ -108,7 +108,7 @@ class MovimientoServiceImplTest {
 
         // Act
 
-        assertThrows(MovimientoException.class, () -> service.registrarMovimiento(dto));
+        assertThrows(MovimientoException.class, () -> service.add(dto));
         // Assert
     }
 
@@ -126,9 +126,9 @@ class MovimientoServiceImplTest {
 
 
         when(movimientoRepository.save(any(Movimiento.class))).thenReturn(movimiento);
-        when(productoClient.obtenerProducto(1)).thenReturn(new ProductoDtoResponse(1, "Producto 1", "Descripcion 1", 100.0, true, LocalDate.of(2021, 10, 10), 10));
+        when(productoClient.getProduct(1)).thenReturn(new ProductoDtoResponse(1, "Producto 1", "Descripcion 1", 100.0, true, LocalDate.of(2021, 10, 10), 10));
 
-        MovimientoDtoResponse movimientoDtoResponse = service.registrarMovimiento(dto);
+        MovimientoDtoResponse movimientoDtoResponse = service.add(dto);
 
         // Assert
         assertNotNull(movimientoDtoResponse);

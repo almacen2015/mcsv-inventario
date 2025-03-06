@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 public interface ProductoClient {
 
     @GetMapping("/{id}")
-    ProductoDtoResponse obtenerProducto(@PathVariable Integer id);
+    ProductoDtoResponse getProduct(@PathVariable Integer id);
 
     @PutMapping("/stock/{id}/{cantidad}/{tipoMovimiento}")
-    void actualizarStock(@PathVariable Integer id, @PathVariable Integer cantidad, @PathVariable String tipoMovimiento);
+    void updateStock(@PathVariable Integer id, @PathVariable Integer cantidad, @PathVariable String tipoMovimiento);
 }

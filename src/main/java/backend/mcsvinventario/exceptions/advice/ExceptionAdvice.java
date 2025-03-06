@@ -15,10 +15,10 @@ import java.util.Set;
 public class ExceptionAdvice {
 
     private static final Set<String> ERRORES_VALIDACION = Set.of(
-            MovimientoException.MOVIMIENTO_CANTIDAD_INVALIDA,
-            MovimientoException.MOVIMIENTO_TIPO_INVALIDO,
-            MovimientoException.MOVIMIENTO_PRODUCTO_INVALIDO,
-            MovimientoException.MOVIMIENTO_ID_INVALIDO
+            MovimientoException.INVALID_AMOUNT,
+            MovimientoException.INVALID_TYPE_MOVEMENT,
+            MovimientoException.INVALID_PRODUCT,
+            MovimientoException.INVALID_ID
     );
 
     @ExceptionHandler(MovimientoException.class)

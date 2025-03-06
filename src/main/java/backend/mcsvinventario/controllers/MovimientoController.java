@@ -34,8 +34,8 @@ public class MovimientoController {
             @ApiResponse(responseCode = "500", description = "Error interno")
     })
     @PostMapping
-    public ResponseEntity<MovimientoDtoResponse> registrarMovimiento(@RequestBody MovimientoDtoRequest dto) {
-        MovimientoDtoResponse response = movimientoService.registrarMovimiento(dto);
+    public ResponseEntity<MovimientoDtoResponse> add(@RequestBody MovimientoDtoRequest dto) {
+        MovimientoDtoResponse response = movimientoService.add(dto);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -48,8 +48,8 @@ public class MovimientoController {
             @ApiResponse(responseCode = "500", description = "Error interno")
     })
     @GetMapping("/{idProducto}")
-    public ResponseEntity<List<MovimientoDtoResponse>> listarMovimientosPorProducto(@PathVariable Integer idProducto) {
-        List<MovimientoDtoResponse> response = movimientoService.listarMovimientosPorProducto(idProducto);
+    public ResponseEntity<List<MovimientoDtoResponse>> listByIdProducto(@PathVariable Integer idProducto) {
+        List<MovimientoDtoResponse> response = movimientoService.listByIdProducto(idProducto);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

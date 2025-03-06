@@ -8,13 +8,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -48,7 +44,7 @@ class MovimientoControllerTest {
     @Test
     void testListarMovimientosPorProducto_dadoQueNoHayMovimientos() throws Exception {
         // Arrange
-        when(service.listarMovimientosPorProducto(2)).thenReturn(List.of());
+        when(service.listByIdProducto(2)).thenReturn(List.of());
         // Act
         mockMvc.perform(get("/api/movimiento/2")
                         .contentType(MediaType.APPLICATION_JSON))
@@ -60,7 +56,7 @@ class MovimientoControllerTest {
     void testListarMovimientosPorProducto() throws Exception {
         // Arrange
         MovimientoDtoResponse response = new MovimientoDtoResponse(10, 1, 5, "ENTRADA", "2025-01-01");
-        when(service.listarMovimientosPorProducto(1)).thenReturn(List.of(response));
+        when(service.listByIdProducto(1)).thenReturn(List.of(response));
         // Act
         mockMvc.perform(get("/api/movimiento/1")
                         .contentType(MediaType.APPLICATION_JSON))
@@ -77,7 +73,7 @@ class MovimientoControllerTest {
         String json = objectMapper.writeValueAsString(dto);
         MovimientoDtoResponse response = new MovimientoDtoResponse(1, 1, 1, "ENTRADA", "2025-01-01");
 
-        when(service.registrarMovimiento(any(MovimientoDtoRequest.class))).thenReturn(response);
+        when(service.add(any(MovimientoDtoRequest.class))).thenReturn(response);
         // Act
         mockMvc.perform(post("/api/movimiento")
                         .contentType(MediaType.APPLICATION_JSON)
