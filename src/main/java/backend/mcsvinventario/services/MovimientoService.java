@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface MovimientoService {
 
-    MovimientoDtoResponse registrarMovimiento(MovimientoDtoRequest dto);
+    MovimientoDtoResponse add(MovimientoDtoRequest dto);
 
-    List<MovimientoDtoResponse> listarMovimientosPorProducto(Integer idProducto);
+    List<MovimientoDtoResponse> listByIdProducto(Integer idProducto);
 }

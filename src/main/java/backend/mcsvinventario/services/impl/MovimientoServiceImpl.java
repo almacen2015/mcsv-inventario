@@ -11,7 +11,6 @@ import backend.mcsvinventario.models.entities.TipoMovimiento;
 import backend.mcsvinventario.repositories.MovimientoRepository;
 import backend.mcsvinventario.services.MovimientoService;
 import jakarta.transaction.Transactional;
-import org.springframework.boot.http.client.ClientHttpRequestFactoryBuilder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -32,8 +31,8 @@ public class MovimientoServiceImpl implements MovimientoService {
     }
 
     @Override
-    public List<MovimientoDtoResponse> listarMovimientosPorProducto(Integer idProducto) {
-        verificarId(idProducto);
+    public List<MovimientoDtoResponse> listByIdProducto(Integer idProducto) {
+        validateId(idProducto);
         List<Movimiento> movimientos = movimientoRepository.findByProductoId(idProducto);
         if (!movimientos.isEmpty()) {
             return movimientoMapper.toListDto(movimientos);
@@ -43,51 +42,51 @@ public class MovimientoServiceImpl implements MovimientoService {
 
     @Override
     @Transactional(rollbackOn = Exception.class)
-    public MovimientoDtoResponse registrarMovimiento(MovimientoDtoRequest dto) {
+    public MovimientoDtoResponse add(MovimientoDtoRequest dto) {
         final Integer cantidad = dto.cantidad();
         final String tipoMovimiento = dto.tipoMovimiento();
         final Integer productoId = dto.productoId();
 
-        sonDatosValidos(cantidad, tipoMovimiento, productoId);
-        ProductoDtoResponse producto = obtenerProducto(productoId);
-        verificarStock(producto.stock(), tipoMovimiento);
+        validateData(cantidad, tipoMovimiento, productoId);
+        ProductoDtoResponse producto = getProduct(productoId);
+        validateStock(producto.stock(), tipoMovimiento);
 
-        productoClient.actualizarStock(productoId, cantidad, tipoMovimiento);
+        productoClient.updateStock(productoId, cantidad, tipoMovimiento);
 
         Movimiento movimiento = movimientoMapper.toEntity(dto);
         movimiento.setFechaRegistro(LocalDateTime.now());
         return movimientoMapper.toDto(movimientoRepository.save(movimiento));
     }
 
-    private void verificarStock(Integer stock, String tipoMovimiento) {
+    private void validateStock(Integer stock, String tipoMovimiento) {
         if (Objects.equals(tipoMovimiento, TipoMovimiento.SALIDA.name()) && stock <= 0) {
-            throw new MovimientoException(MovimientoException.MOVIMIENTO_SIN_STOCK);
+            throw new MovimientoException(MovimientoException.MOVEMENT_WITHOUT_STOCK);
         }
     }
 
-    private ProductoDtoResponse obtenerProducto(Integer productoId) {
-        Optional<ProductoDtoResponse> producto = Optional.ofNullable(productoClient.obtenerProducto(productoId));
+    private ProductoDtoResponse getProduct(Integer productoId) {
+        Optional<ProductoDtoResponse> producto = Optional.ofNullable(productoClient.getProduct(productoId));
         if (producto.isEmpty()) {
-            throw new MovimientoException(MovimientoException.MOVIMIENTO_PRODUCTO_INVALIDO);
+            throw new MovimientoException(MovimientoException.INVALID_PRODUCT);
         }
         return producto.get();
     }
 
-    private void verificarId(Integer id) {
+    private void validateId(Integer id) {
         if (id == null || id <= 0) {
-            throw new MovimientoException(MovimientoException.MOVIMIENTO_ID_INVALIDO);
+            throw new MovimientoException(MovimientoException.INVALID_ID);
         }
     }
 
-    private void sonDatosValidos(Integer cantidad, String tipoMovimiento, Integer idProducto) {
+    private void validateData(Integer cantidad, String tipoMovimiento, Integer idProducto) {
         if (cantidad == null || cantidad <= 0) {
-            throw new MovimientoException(MovimientoException.MOVIMIENTO_CANTIDAD_INVALIDA);
+            throw new MovimientoException(MovimientoException.INVALID_AMOUNT);
         }
 
         if (tipoMovimiento == null || tipoMovimiento.isBlank()) {
-            throw new MovimientoException(MovimientoException.MOVIMIENTO_TIPO_INVALIDO);
+            throw new MovimientoException(MovimientoException.INVALID_TYPE_MOVEMENT);
         }
 
-        verificarId(idProducto);
+        validateId(idProducto);
     }
 }
