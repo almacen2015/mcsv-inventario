@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>backend</groupId>
-    <artifactId>mcsv-inventario</artifactId>
+    <artifactId>mcsv-movimiento</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>mcsv-inventario</name>
     <description>mcsv-inventario</description>
