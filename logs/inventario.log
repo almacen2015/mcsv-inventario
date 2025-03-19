@@ -34,9 +34,9 @@
 2025-02-06 19:11:41 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
 2025-02-06 19:11:41 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
 2025-02-06 19:12:38 [http-nio-8080-exec-1] ERROR b.m.advice.ExceptionAdvice - La cantidad del movimiento es inválida
-backend.mcsvinventario.exceptions.MovimientoException: La cantidad del movimiento es inválida
-	at backend.mcsvinventario.services.impl.MovimientoServiceImpl.sonDatosValidos(MovimientoServiceImpl.java:67)
-	at backend.mcsvinventario.services.impl.MovimientoServiceImpl.registrarMovimiento(MovimientoServiceImpl.java:40)
+backend.mcsvmovimiento.exceptions.MovimientoException: La cantidad del movimiento es inválida
+	at backend.mcsvmovimiento.services.impl.MovimientoServiceImpl.sonDatosValidos(MovimientoServiceImpl.java:67)
+	at backend.mcsvmovimiento.services.impl.MovimientoServiceImpl.registrarMovimiento(MovimientoServiceImpl.java:40)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -48,8 +48,8 @@ backend.mcsvinventario.exceptions.MovimientoException: La cantidad del movimient
 	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119)
 	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
 	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:727)
-	at backend.mcsvinventario.services.impl.MovimientoServiceImpl$$SpringCGLIB$$0.registrarMovimiento(<generated>)
-	at backend.mcsvinventario.controllers.MovimientoController.registrarMovimiento(MovimientoController.java:33)
+	at backend.mcsvmovimiento.services.impl.MovimientoServiceImpl$$SpringCGLIB$$0.registrarMovimiento(<generated>)
+	at backend.mcsvmovimiento.controllers.MovimientoController.registrarMovimiento(MovimientoController.java:33)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
