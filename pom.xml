@@ -10,9 +10,9 @@
     </parent>
     <groupId>backend</groupId>
     <artifactId>mcsv-movimiento</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <name>mcsv-inventario</name>
-    <description>mcsv-inventario</description>
+    <version>1.0.0-SNAPSHOT</version>
+    <name>mcsv-movimiento</name>
+    <description>mcsv-movimiento</description>
     <url/>
     <licenses>
         <license/>
